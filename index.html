@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="render" content="webkit" />
+<title>editor test</title>
+<link href="style/quill.snow.css" rel="stylesheet">
+<!-- <link href="style/quill.bubble.css" rel="stylesheet"> -->
+<!-- <link href="style/quill.core.css" rel="stylesheet"> -->
+<body>
+<!-- Create the editor container -->
+<div id="editor">
+  <p>Hello World!</p>
+  <p>Some initial <strong>bold</strong> text</p>
+  <p><br></p>
+</div>
+<div class="raw-editor-wrap">
+  <iframe id="raw-editor" frameborder="0" style="display: block; width: 100%; height: 500px;">
+  </iframe>
+  <input type="text" id="path" value="https://imgsa.baidu.com/baike/pic/item/d058ccbf6c81800abaa6422fbb3533fa828b4754.jpg" />
+  <input type="button" id="insert-img" value="插入图片" />
+  <input type="button" id="preview" value="预览" />
+  <p style="border: 1px dashed #ccc;" id="preview-area"></p>
+</div>
+
+<!-- Include the Quill library -->
+<script src="js/jquery-3.2.1.js"></script>
+<script src="js/quill.js"></script>
+
+<!-- Initialize Quill editor -->
+<script>
+  var quill = new Quill('#editor', {
+    theme: 'snow'
+  });
+  $(function () {
+    var editorDom = $('#raw-editor')[0].contentWindow.document;
+    editorDom.designMode = 'on';
+    editorDom.contentEditable = true;
+    editorDom.open();
+    editorDom.close();
+
+    $('body', editorDom).append('<p>Hello World!</p><p>Some initial <strong>bold</strong> text</p><p><br></p>');
+
+    $('#insert-img').click(function () {
+        var img = '<img src="'+ $('#path').val() +'">';
+        $('body', editorDom).append(img);
+    });
+
+    $('#preview').click(function () {
+      $('#preview-area').html($('#raw-editor').contents().find('body').html());
+    });
+  });  
+</script>
+</body>
+</html>
